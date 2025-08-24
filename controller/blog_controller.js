@@ -1,43 +1,49 @@
-const express = require("express")
 const blogModel = require("../Mongo_DB/blogModel")
-const app = express()
 
-// required for request body parsing
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-
-// --------------------------------------- CREATE BLOG -------------------------------------
+// ---------------- CREATE BLOG ----------------
 
 async function createBlog(req, res) {
-  const { content, blog_name } = req.body
+  const { blog_name, content } = req.body
+  if (!content) return res.status(400).send("Content is required")
+
   try {
-    const created_blog = blogModel.create({
-      blog_name,
-      content,
-    })
-    console.log(`successfully created blog`)
-    return res.render("/blog-page")
+    const created_blog = await blogModel.create({ blog_name, content })
+    console.log(`Blog created: ${created_blog.blog_name}`)
+    return res.redirect("/blog-page")
   } catch (error) {
-    console.log(`problem creating blog`, error)
+    console.log("Error creating blog:", error)
     return res.sendStatus(500)
   }
 }
 
-// ----------------------------------------- GET BLOG ------------------------------------------
+// ---------------- FETCH BLOGS ----------------
 
-async function fetchBlog(req, res) {
-  const { blogID } = req.body
+async function fetchBlogs(req, res) {
+  try {
+    const blogs = await blogModel.find().sort({ _id: -1 })
+    return res.render("blogs", { blogs })
+  } catch (error) {
+    console.log("Error fetching blogs:", error)
+    return res.sendStatus(500)
+  }
+}
+
+// ---------------- FETCH SINGLE BLOG ----------------
+
+async function fetchBlogByID(req, res) {
+  const { blogID } = req.query // use query string: /blog-page?blogID=123
   try {
     const found_blog = await blogModel.findOne({ blogID })
-    console.log(`successfully fetching blog`)
-    return res.json({ found_blog })
+    if (!found_blog) return res.status(404).send("Blog not found")
+    return res.json(found_blog)
   } catch (error) {
-    console.log(`problem fetching blog`, error)
+    console.log("Error fetching blog:", error)
     return res.sendStatus(500)
   }
 }
 
 module.exports = {
   createBlog,
-  fetchBlog,
+  fetchBlogs,
+  fetchBlogByID,
 }

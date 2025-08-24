@@ -1,28 +1,18 @@
 const express = require("express")
-const blogModel = require("../Mongo_DB/blogModel") // adjust path
-const blogRouter = express.Router()
+const {
+  createBlog,
+  fetchBlogs,
+  fetchBlogByID,
+} = require("../controllers/blogController")
+const router = express.Router()
 
-// Display all blogs at /blog-page
-blogRouter.get("/blog-page", async (req, res) => {
-  try {
-    const blogs = await blogModel.find().sort({ _id: -1 }) // latest first
-    res.render("blogs", { blogs }) // renders views/blogs.ejs
-  } catch (err) {
-    console.error(err)
-    res.send("Error fetching blogs")
-  }
-})
+// Show all blogs
+router.get("/blog-page", fetchBlogs)
 
-// Optional: Create new blog (for admin or user)
-blogRouter.post("/blog-page", async (req, res) => {
-  try {
-    const { blog_name, content } = req.body
-    const blog = await blogModel.create({ blog_name, content })
-    return res.redirect("/blog-page")
-  } catch (err) {
-    console.error(err)
-    return res.send("Error creating blog")
-  }
-})
+// Create new blog
+router.post("/blog-page", createBlog)
 
-module.exports = blogRouter
+// Fetch a single blog by blogID
+router.get("/blog", fetchBlogByID)
+
+module.exports = router
