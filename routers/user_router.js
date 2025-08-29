@@ -1,10 +1,17 @@
-const express = require("express")
-const { getUserLogin, getUserSignUp } = require("../controller/user_controller")
+import express from "express"
+import {
+  getUserLogin,
+  getUserSignUp,
+  getUserProfile,
+} from "../controller/user_controller.js"
+import { verifyToken } from "../middlewares/auth_middleware.js"
 
-const router = express.Router()
+const userRouter = express.Router()
+
+userRouter.get("/profile", verifyToken, getUserProfile)
 
 // handle form submissions
-router.post("/signup", getUserSignUp)
-router.post("/login", getUserLogin)
+userRouter.post("/signup", getUserSignUp)
+userRouter.post("/login", getUserLogin)
 
-module.exports = router
+export default userRouter

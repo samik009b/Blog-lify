@@ -1,5 +1,4 @@
-const mongoose = require("mongoose")
-const { v4: uuidv4 } = require("uuid")
+import mongoose from "mongoose"
 
 const blogSchema = new mongoose.Schema({
   blog_name: {
@@ -10,13 +9,12 @@ const blogSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  blogID: {
-    type: String,
-    default: uuidv4,
+  author: {
+    ref: "userModel",
     required: true,
-    unique: true,
+    type: mongoose.Schema.Types.ObjectId,
   },
 })
 
 const blogModel = mongoose.model("blogModel", blogSchema, "blogs")
-module.exports = blogModel
+export default blogModel

@@ -4,44 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>All Blogs</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #f7f7f7;
-        padding: 20px;
-      }
-      .blog-card {
-        background: #fff;
-        padding: 20px;
-        margin-bottom: 15px;
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      }
-      .blog-title {
-        font-size: 1.5em;
-        margin-bottom: 10px;
-      }
-      .blog-content {
-        font-size: 1em;
-        color: #333;
-        white-space: pre-line;
-      }
-    </style>
+    <link rel="stylesheet" href="./blogs.css" />
   </head>
   <body>
-    <h1>All Blogs</h1>
-
-    <div>
+    <div class="submission_form">
+      <div><h1>All Blogs</h1></div>
       <form action="" method="POST">
         <div><input type="text" name="blog_name" />Title</div>
-        <div><input type="text" name="content" />Content</div>
+        <div><textarea name="content" rows="6" cols="40" /></textarea>Content</div>
         <div><button type="submit">Add blog</button></div>
       </form>
     </div>
 
     <% if (blogs && blogs.length > 0) { %> <% blogs.forEach(blog => { %>
     <div class="blog-card">
-      <div class="blog-title"><%= blog.blog_name %></div>
+      <div class="blog-title"><h2><%= blog.blog_name %></h2></div>
       <div class="blog-content"><%= blog.content %></div>
     </div>
     <% }) %> <% } else { %>

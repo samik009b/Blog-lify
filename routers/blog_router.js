@@ -1,18 +1,13 @@
-const express = require("express")
-const {
-  createBlog,
-  fetchBlogs,
-  fetchBlogByID,
-} = require("../controllers/blogController")
-const router = express.Router()
+import express from "express"
+import { createBlog, fetchBlogs } from "../controller/blog_controller.js"
+import { verifyToken } from "../middlewares/auth_middleware.js"
 
-// Show all blogs
-router.get("/blog-page", fetchBlogs)
+const blogRouter = express.Router()
 
 // Create new blog
-router.post("/blog-page", createBlog)
+blogRouter.post("/blogs", verifyToken, createBlog)
 
-// Fetch a single blog by blogID
-router.get("/blog", fetchBlogByID)
+// Show all blogs
+blogRouter.get("/blogs", verifyToken, fetchBlogs)
 
-module.exports = router
+export default blogRouter

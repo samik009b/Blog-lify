@@ -1,15 +1,20 @@
-const blogModel = require("../Mongo_DB/blogModel")
+import mongoose from "mongoose"
+import blogModel from "../Mongo_DB/blogModel.js"
 
 // ---------------- CREATE BLOG ----------------
 
-async function createBlog(req, res) {
+export async function createBlog(req, res) {
   const { blog_name, content } = req.body
   if (!content) return res.status(400).send("Content is required")
 
   try {
-    const created_blog = await blogModel.create({ blog_name, content })
+    const created_blog = await blogModel.create({
+      blog_name,
+      content,
+      author: req.user.id,
+    })
     console.log(`Blog created: ${created_blog.blog_name}`)
-    return res.redirect("/blog-page")
+    return res.redirect("/blogs")
   } catch (error) {
     console.log("Error creating blog:", error)
     return res.sendStatus(500)
@@ -18,32 +23,19 @@ async function createBlog(req, res) {
 
 // ---------------- FETCH BLOGS ----------------
 
-async function fetchBlogs(req, res) {
+export async function fetchBlogs(req, res) {
+  let blog
   try {
-    const blogs = await blogModel.find().sort({ _id: -1 })
-    return res.render("blogs", { blogs })
+    if (req.user.role === "admin") {
+      blog = await blogModel.find().populate("author", "name username email")
+    } else {
+      blog = await blogModel
+        .find({ author: req.user.id })
+        .populate("author", "name username email")
+    }
+    res.render("blogs", { blogs: blog })
   } catch (error) {
-    console.log("Error fetching blogs:", error)
-    return res.sendStatus(500)
+    console.error("/n/n EJS render error:", error)
+    res.status(500).json({ error: "blog is not found " })
   }
-}
-
-// ---------------- FETCH SINGLE BLOG ----------------
-
-async function fetchBlogByID(req, res) {
-  const { blogID } = req.query // use query string: /blog-page?blogID=123
-  try {
-    const found_blog = await blogModel.findOne({ blogID })
-    if (!found_blog) return res.status(404).send("Blog not found")
-    return res.json(found_blog)
-  } catch (error) {
-    console.log("Error fetching blog:", error)
-    return res.sendStatus(500)
-  }
-}
-
-module.exports = {
-  createBlog,
-  fetchBlogs,
-  fetchBlogByID,
 }

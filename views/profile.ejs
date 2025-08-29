@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>User Profile</title>
+  </head>
+  <body>
+    <h1>Welcome, <%= user.name %>!</h1>
+
+    <h3>Profile Details</h3>
+    <ul>
+      <li><strong>ID:</strong> <%= user._id %></li>
+      <li><strong>Email:</strong> <%= user.email %></li>
+      <li><strong>Name:</strong> <%= user.name %></li>
+      <li>
+        <strong>Created:</strong>
+        <%= user.createdAt ? user.createdAt.toDateString() : "N/A" %>
+      </li>
+    </ul>
+  </body>
+</html>
