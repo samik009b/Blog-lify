@@ -6,7 +6,9 @@
 	"scripts": {
 		"dev": "nodemon index.js",
 		"doctor": "clinic doctor -- node index.js",
-    "autocannon": "npx autocannon http://localhost:3000 -c 10 -d 10"
+		"autocannon": "npx autocannon http://localhost:3000 -c 5 -d 8",
+		"build": "npm install",
+		"start": "node index.js"
 	},
 	"author": "Samik",
 	"license": "ISC",
@@ -19,8 +21,10 @@
 		"express": "^5.1.0",
 		"jsonwebtoken": "^9.0.2",
 		"mongoose": "^8.18.0",
-		"nodemon": "^3.1.10",
 		"swagger-ui-express": "^5.0.1",
 		"uuid": "^11.1.0"
+	},
+	"devDependencies": {
+		"nodemon": "^3.1.10"
 	}
 }
