@@ -1,0 +1,104 @@
+{
+	"openapi": "3.0.3",
+	"info": {
+		"title": "BLOGLIFY",
+		"version": "1.0.0",
+		"description": "API documentation for my backend"
+	},
+	"servers": [
+		{
+			"url": "http://localhost:3000",
+			"description": "Local development server"
+		}
+	],
+	"paths": {
+		"/register": {
+			"post": {
+				"tags": ["Auth"],
+				"summary": "Register new user",
+				"description": "Creates a new user in the database",
+				"responses": {
+					"200": {
+						"description": "User registered successfully"
+					},
+					"400": {
+						"description": "Invalid input"
+					},
+					"500": {
+						"description": "Internal server error"
+					}
+				}
+			}
+		},
+		"/login": {
+			"post": {
+				"tags": ["Auth"],
+				"summary": "Register new user",
+				"description": "Creates a new user in the database",
+				"responses": {
+					"200": {
+						"description": "User registered successfully"
+					},
+					"400": {
+						"description": "Invalid input"
+					},
+					"500": {
+						"description": "Internal server error"
+					}
+				}
+			}
+		},
+		"/profile": {
+			"get": {
+				"tags": ["Auth"],
+				"summary": "Fetch user profile",
+				"description": "Fetches the profile of a logged in user",
+				"responses": {
+					"200": {
+						"description": "User profile fetched successfully"
+					},
+					"404": {
+						"description": "User not found"
+					},
+					"500": {
+						"description": "Tnternal server error"
+					}
+				}
+			}
+		},
+		"/blogs": {
+			"get": {
+				"tags": ["Blog"],
+				"summary": "Fetch user blogs",
+				"description": "Fetches the blogs created by the user",
+				"responses": {
+					"200": {
+						"description": "Blogs fetched successfully"
+					},
+					"404": {
+						"description": "No blogs found"
+					},
+					"500": {
+						"description": "Tnternal server error"
+					}
+				}
+			},
+			"post": {
+				"tags": ["Blog"],
+				"summary": "Blog posted",
+				"description": "Posts a blog created by user",
+				"responses": {
+					"200": {
+						"description": "User blog posted successfully"
+					},
+					"400": {
+						"description": "Content is required"
+					},
+					"500": {
+						"description": "Tnternal server error"
+					}
+				}
+			}
+		}
+	}
+}

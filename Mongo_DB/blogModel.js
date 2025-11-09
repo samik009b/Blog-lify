@@ -9,10 +9,11 @@ const blogSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  // author is the reference to the user from userModel
   author: {
-    ref: "userModel",
-    required: true,
     type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "userModel",
   },
 })
 

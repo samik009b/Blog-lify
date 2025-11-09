@@ -1,4 +1,3 @@
-import mongoose from "mongoose"
 import blogModel from "../Mongo_DB/blogModel.js"
 
 // ---------------- CREATE BLOG ----------------

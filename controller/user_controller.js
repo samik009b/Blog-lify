@@ -48,11 +48,11 @@ export async function getUserLogin(req, res) {
       res.redirect("/login")
     }
 
-    /* cretaing JSON web token with a secret key for my user authentication the
-    id will be used to verify the token later on while fetching user profile */
-    const token = jwt.sign(
+    // cretaing JSON web token with a secret key for my user authentication the
+    // id will be used to verify the token later on while fetching user profile
+    const createdToken = jwt.sign(
       {
-        id: found_user._id.toString(),
+        id: found_user._id.toString(), // _id is from database
         username: found_user.username,
         email: found_user.email,
         role: found_user.role,
@@ -62,13 +62,11 @@ export async function getUserLogin(req, res) {
     )
 
     // creating a cookie to send the jwt via the cookie
-    res.cookie("token", token, {
+    res.cookie("token", createdToken, {
       httpOnly: true,
-      maxAge: 60 * 60 * 1000, // 1 hour
-      // secure: true, // enable in production with https
-      // sameSite: 'lax'
+      maxAge: 60 * 60 * 1000,
     })
-    console.log(token)
+    console.log(createdToken)
 
     return res.redirect("/blogs")
   } catch (err) {
@@ -77,7 +75,7 @@ export async function getUserLogin(req, res) {
   }
 }
 
-// -------------------------------- USER PROFILE ---------------------------------------
+// -------------------------------- USER PROFILE ----------------------------------
 
 export async function getUserProfile(req, res) {
   try {

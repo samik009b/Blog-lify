@@ -1,35 +1,51 @@
-import express from "express"
-import cookieParser from "cookie-parser"
-import userRouter from "./routers/user_router.js"
-import blogRouter from "./routers/blog_router.js"
-import staticRouter from "./routers/static_router.js"
-import dotenv from "dotenv"
-import path from "path"
+import express from "express";
+import cookieParser from "cookie-parser";
+import userRouter from "./routers/user_router.js";
+import blogRouter from "./routers/blog_router.js";
+import staticRouter from "./routers/static_router.js";
+import connect_to_mongoDB from "./Mongo_DB/connection.js";
+import dotenv from "dotenv";
 
-dotenv.config()
-const app = express()
+import path from "path";
+import swaggerUi from "swagger-ui-express";
+import fs from "fs";
+import { fileURLToPath } from "url"; // <-- needed for __dirname replacement
 
-//connection
-import connect_to_mongoDB from "./Mongo_DB/connection.js"
-connect_to_mongoDB(process.env.MONGO_URI)
+dotenv.config();
 
-// middlewares
-app.use(express.json())
-app.use(cookieParser())
-app.use(express.urlencoded({ extended: true }))
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-app.set("view engine", "ejs")
-app.set("views", path.resolve("./views"))
-app.use(express.static(path.join(process.cwd(), "utils")))
+// Read swagger JSON
+const swaggerPath = path.resolve(__dirname, "./docs/swagger-docs.json");
+const swaggerDocs = JSON.parse(fs.readFileSync(swaggerPath, "utf-8"));
 
-app.get("/", (req, res) => res.render("home"))
+const app = express();
 
-// using the routers
-app.use("/", userRouter)
-app.use("/", blogRouter)
-app.use("/", staticRouter)
+// MongoDB connection
+connect_to_mongoDB(process.env.MONGO_URI);
 
-const PORT = process.env.PORT || 5000
+// Middlewares
+app.use(express.json());
+app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
+
+// Swagger docs
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
+// EJS setup
+app.set("view engine", "ejs");
+app.set("views", path.resolve("./views"));
+app.use(express.static(path.join(process.cwd(), "utils")));
+
+app.get("/", (req, res) => res.render("home"));
+
+// Routers
+app.use("/", userRouter);
+app.use("/", blogRouter);
+app.use("/", staticRouter);
+
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () =>
-  console.log(`server started on http://localhost:${PORT}`)
-)
+	console.log(`Server started on http://localhost:${PORT}`)
+);
