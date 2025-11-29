@@ -1,0 +1,13 @@
+{
+    // Visit https://aka.ms/tsconfig to read more about this file
+    "compilerOptions": {
+        "rootDir": "src",
+        "outDir": "dist",
+        "esModuleInterop": true,
+        "module": "commonjs",
+        "target": "ES2020",
+        "strict": true,
+        "skipLibCheck": true
+    },
+    "exclude": ["eslint.config.ts", "node_modules", "dist"]
+}
