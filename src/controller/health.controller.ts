@@ -1,4 +1,4 @@
-import { application, NextFunction, Request, response, Response } from "express";
+import { NextFunction, Request, response, Response } from "express";
 import quicker from "../utils/quicker";
 import httpResponse from "../utils/http.response";
 
@@ -12,6 +12,6 @@ export default {
             };
 
             httpResponse(req, res, 200, "OK", healthData);
-        } catch (error) {}
+        } catch (error) { }
     }
 };

@@ -15,6 +15,6 @@ export const verifyToken = catchAsync((req: Request, res: Response, next: NextFu
 
     // checks the validity of the token
     const verified = jwt.verify(token, String(process.env.MY_SECRET_KEY));
-    req.user = verified;
+    req.user = verified as string;
     next();
 });

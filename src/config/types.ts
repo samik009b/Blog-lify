@@ -9,6 +9,7 @@ export type THttpResponse = {
     message: string;
     data: unknown;
 };
+
 export type THttpError = {
     success: boolean;
     statusCode: number;

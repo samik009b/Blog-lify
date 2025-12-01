@@ -3,7 +3,6 @@ import bcrypt from "bcrypt";
 import { Request, Response, CookieOptions } from "express";
 import jwt from "jsonwebtoken";
 import { catchAsync } from "../utils/catchAsync";
-import { apiError } from "../utils/error";
 import { createAccessToken, createRefreshToken } from "../utils/token";
 
 type U = Pick<IUser, "name" | "username" | "password" | "email">;
@@ -77,7 +76,7 @@ export const login = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const profile = catchAsync(async (req: Request, res: Response) => {
-    const userId = req.user.id;
+    const userId = req.user;
 
     if (!userId) {
         return res.status(401).json({ success: false, message: "not logged in" });

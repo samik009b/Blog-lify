@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { blogModel } from "../models/blogModel.js";
 import { catchAsync } from "../utils/catchAsync.js";
 
-// ---------------- CREATE BLOG ----------------
 
 export const createBlog = catchAsync(async (req: Request, res: Response) => {
     const { blogName, content } = req.body;
@@ -19,7 +18,6 @@ export const createBlog = catchAsync(async (req: Request, res: Response) => {
     return res.status(201).json({ success: true, message: "blog created", id: createdBlog._id });
 });
 
-// ---------------- FETCH BLOGS ----------------
 
 export const getBlogs = catchAsync(async (req: Request, res: Response): Promise<void> => {
     let blog;

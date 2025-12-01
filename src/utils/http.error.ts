@@ -18,8 +18,8 @@ export default function errorHandler(err: unknown, req: Request, res: Response, 
             process.env.NODE_ENV === "production"
                 ? null
                 : err instanceof Error
-                  ? { error: err.stack }
-                  : { error: JSON.stringify(err) }
+                    ? { error: err.stack }
+                    : { error: JSON.stringify(err) }
     };
 
     if (process.env.NODE_ENV === "production") {
