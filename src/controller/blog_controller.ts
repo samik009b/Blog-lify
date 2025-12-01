@@ -1,33 +1,33 @@
 import { Request, Response } from "express";
-import blogModel from "../models/blogModel.js";
+import { blogModel } from "../models/blogModel.js";
 import { catchAsync } from "../utils/catchAsync.js";
 
 // ---------------- CREATE BLOG ----------------
 
 export const createBlog = catchAsync(async (req: Request, res: Response) => {
-    const { blog_name, content } = req.body;
-    if (!content) return res.status(400).send("Content is required");
+    const { blogName, content } = req.body;
+    if (!content) {
+        return res.status(400).send("Content is required");
+    }
 
-    const created_blog = await blogModel.create({
-        blog_name,
+    const createdBlog = await blogModel.create({
+        blogName,
         content,
         author: req.user.id
     });
-    console.log(`Blog created: ${created_blog.blog_name}`);
-    return res.redirect("/blogs");
+
+    return res.status(201).json({ success: true, message: "blog created", id: createdBlog._id });
 });
 
 // ---------------- FETCH BLOGS ----------------
 
-export const getBlogs = catchAsync(async (req: Request, res: Response) => {
+export const getBlogs = catchAsync(async (req: Request, res: Response): Promise<void> => {
     let blog;
 
     if (req.user.role === "admin") {
-        blog = await blogModel.find().populate("author", "name username email");
+        blog = await blogModel.find().populate("author", "name username email").lean().exec();
     } else {
-        blog = await blogModel
-            .find({ author: req.user.id })
-            .populate("author", "name username email");
+        blog = await blogModel.find({ author: req.user.id }).populate("author", "name username email").lean().exec();
     }
-    res.render("blogs", { blogs: blog });
+    res.status(200).json({ successs: true, message: "all blogs", blogs: blog });
 });

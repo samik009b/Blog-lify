@@ -1,21 +1,11 @@
-import mongoose from "mongoose"
+import { Schema, model } from "mongoose";
 
-const blogSchema = new mongoose.Schema({
-  blog_name: {
-    type: String,
-    default: "New blog",
-  },
-  content: {
-    type: String,
-    required: true,
-  },
-  // author is the reference to the user from userModel
-  author: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: "userModel",
-  },
-})
+const blogSchema = new Schema({
+    author: { type: Schema.Types.ObjectId, required: true, ref: "userModel" },
+    blogName: { type: String, default: "New blog" },
+    content: { type: String, required: true },
+    createdAt: { type: Date, default: Date.now() },
+    likedBy: { type: Number, default: 0 }
+});
 
-const blogModel = mongoose.model("blogModel", blogSchema, "blogs")
-export default blogModel
+export const blogModel = model("blogModel", blogSchema, "blogs");
