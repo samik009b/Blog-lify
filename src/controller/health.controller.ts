@@ -1,4 +1,4 @@
-import { NextFunction, Request, response, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import quicker from "../utils/quicker";
 import httpResponse from "../utils/http.response";
 

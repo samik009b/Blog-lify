@@ -2,7 +2,7 @@ import "./env.loader";
 
 import app from "./app";
 import { dbConnect } from "./config/connection";
-import { logger } from "./utils/logger";
+import logger from "./utils/logger";
 import mongoose from "mongoose";
 
 const mongo_url = process.env.MONGO_URI;
@@ -15,6 +15,12 @@ async function startServer() {
         app.listen(PORT, () => {
             logger.info(`Server started on port ${PORT}`);
             logger.info(`Environment: ${process.env.NODE_ENV}`);
+        });
+
+        process.on("SIGINT", async () => {
+            await mongoose.connection.close();
+            console.log("Disconnected from database.");
+            process.exit(0);
         });
     } catch (error: any) {
         logger.error("failed to start server");

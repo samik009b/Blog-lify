@@ -1,5 +1,4 @@
 import os from "os";
-import { memoryUsage, uptime } from "process";
 
 export default {
     getSystemHealth: () => {

@@ -6,10 +6,20 @@ import cookieParser from "cookie-parser";
 import userRouter from "./routers/user_router.js";
 import blogRouter from "./routers/blog_router.js";
 import errorHandler from "./utils/http.error.js";
+import helmet from "helmet";
+import cors from "cors";
 
 const app = express();
 
 // Middlewares
+app.use(helmet());
+app.use(
+    cors({
+        credentials: true,
+        methods: ["GET", "PUT", "POST", "DELETE", "UPDATE"],
+        origin: ["http://localhost:5173", "http://localhost:8000", "http://localhost:5174"]
+    })
+);
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
