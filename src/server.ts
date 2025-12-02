@@ -1,11 +1,11 @@
 import "./env.loader";
-
 import app from "./app";
 import { dbConnect } from "./config/connection";
 import logger from "./utils/logger";
 import mongoose from "mongoose";
 
-const mongo_url = process.env.MONGO_URI;
+const mongo_url = `${process.env.MONGO_URI}/${process.env.DB_NAME}`;
+
 async function startServer() {
     try {
         await dbConnect(String(mongo_url));

@@ -9,5 +9,5 @@
         "strict": true,
         "skipLibCheck": true
     },
-    "exclude": ["eslint.config.ts", "node_modules", "dist"]
+    "exclude": ["eslint.config.ts", "node_modules", "dist", "scripts", "migrations"]
 }
