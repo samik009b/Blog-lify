@@ -7,9 +7,9 @@ export const dbConnect = async (URI: string): Promise<void> => {
             serverSelectionTimeoutMS: 5000,
             family: 4
         });
-        logger.info("Database connected: " + conn.connection.host);
+        logger.info("db connected: " + conn.connection.host);
     } catch (err) {
-        logger.error("Error connecting to database: " + err);
+        logger.error("Error connecting to db: " + err);
         throw err;
     }
 };

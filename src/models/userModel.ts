@@ -1,23 +1,17 @@
 import mongoose, { Schema, model } from "mongoose";
+import { TUser } from "../config/types";
 import bcrypt from "bcrypt";
 
-export interface IUser {
-    name: string;
-    username: string;
-    role: "user" | "admin";
-    email: string;
-    password: string;
-}
-
-const UserSchema = new mongoose.Schema<IUser>(
+// user-schema
+const UserSchema = new mongoose.Schema<TUser>(
     {
         name: { type: String, required: true },
         username: { type: String, required: true, unique: true },
         role: { type: String, default: "user", enum: ["user", "admin"] },
         email: { type: String, required: true, unique: true },
-        password: { type: String, required: true },
+        password: { type: String, required: true }
     },
-    { timestamps: true },
+    { timestamps: true }
 );
 
 UserSchema.pre("save", async function (next) {
@@ -30,4 +24,4 @@ UserSchema.pre("save", async function (next) {
     next();
 });
 
-export const userModel = model<IUser>("userModel", UserSchema, "Users");
+export const userModel = model<TUser>("userModel", UserSchema, "Users");
